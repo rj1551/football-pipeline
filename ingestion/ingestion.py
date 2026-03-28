@@ -41,6 +41,3 @@ FROM
 WHERE
     status = 'FINISHED'
 """, [ingestion_time]) # insert if not exists
-
-print(con.sql("SELECT * FROM matches"))
-# print(con.sql(f"SELECT * FROM read_json('{str(script_dir.parent / 'data' / 'raw' / 'matches.json')}')"))
