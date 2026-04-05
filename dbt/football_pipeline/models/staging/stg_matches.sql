@@ -1,5 +1,5 @@
 SELECT 
-    (match_data->>'$.id')::INTEGER AS match_id, 
+    id AS match_id, 
     (match_data->>'$.utcDate')::TIMESTAMP AS utc_date,
     (match_data->>'$.matchday')::INTEGER AS matchday,
     match_data->>'$.stage' AS stage,

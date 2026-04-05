@@ -48,28 +48,34 @@ headers = { 'X-Auth-Token':  football_data_key}
 scorers_ingestion_time = datetime.now()
 response = requests.get(uri, headers=headers)
 
+response_json = response.json()
+season_obj = response_json['season']
+scorers_obj = response_json['scorers']
 with open(script_dir.parent / 'data' / 'raw' / 'scorers.json', "w") as file:
-    json.dump(response.json()['scorers'], file, indent=4)
+    json.dump([scorer | {'season_id':season_obj['id']} for scorer in scorers_obj], file, indent=4)
+
 
 con.sql("""
 CREATE TABLE IF NOT EXISTS scorers (
-    id INTEGER PRIMARY KEY,
+    id INTEGER,
+    season_id INTEGER,
     scorer_data JSON,
-    ingested_at TIMESTAMP
+    ingested_at TIMESTAMP,
+    PRIMARY KEY (id, season_id)
 )""")
 
 con.execute(f"""
 INSERT INTO 
-    scorers (id, scorer_data, ingested_at)
+    scorers (id, season_id, scorer_data, ingested_at)
 SELECT
-    scorer_data::JSON->'player'->>'id', to_json(scorer_data), $1
+    (scorer_data::JSON->>'$.player.id')::INTEGER, (scorer_data::JSON->>'$.season_id')::INTEGER, to_json(scorer_data), $1
 FROM
     '{(script_dir.parent / 'data' / 'raw' / 'scorers.json').as_posix()}' AS scorer_data
-ON CONFLICT (id) DO UPDATE SET
+ON CONFLICT DO UPDATE SET
     scorer_data = EXCLUDED.scorer_data,
     ingested_at = EXCLUDED.ingested_at
 """, [scorers_ingestion_time]) #upsert
 
-# print(len(response.json()['scorers']))
-# print(con.sql('SELECT COUNT(*) FROM scorers'))
-# print(con.sql('SELECT * FROM scorers'))
+# print(response.json())
+print(con.sql('SELECT COUNT(*) FROM scorers'))
+print(con.sql('SELECT DISTINCT ingested_at FROM scorers'))
