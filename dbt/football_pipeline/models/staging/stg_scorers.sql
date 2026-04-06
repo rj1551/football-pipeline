@@ -11,8 +11,8 @@ SELECT
     scorer_data->>'$.team.name' AS team_name,
     scorer_data->>'$.team.tla' AS team_tla,
     (scorer_data->>'$.playedMatches')::INTEGER AS played_matches,
-    (scorer_data->>'$.goals')::INTEGER AS goals,
-    (scorer_data->>'$.assists')::INTEGER AS assists,
-    (scorer_data->>'$.penalties')::INTEGER AS penalties
+    COALESCE((scorer_data->>'$.goals')::INTEGER, 0) AS goals,
+    COALESCE((scorer_data->>'$.assists')::INTEGER, 0) AS assists,
+    COALESCE((scorer_data->>'$.penalties')::INTEGER, 0) AS penalties
 FROM
     scorers

@@ -1,0 +1,54 @@
+models:
+  - name: stg_matches
+    columns:
+      - name: match_id
+        tests:
+          - not_null
+          - unique
+      - name: home_team_id
+        tests:
+          - not_null
+      - name: away_team_id
+        tests:
+          - not_null
+      - name: fulltime_home_goals
+        tests:
+          - not_null
+      - name: utc_date
+        tests:
+          - not_null
+      - name: matchday
+        tests:
+          - not_null
+      - name: season_id
+        tests:
+          - not_null
+      - name: winner
+        tests:
+          - accepted_values: 
+              arguments:
+                values: [HOME_TEAM, AWAY_TEAM, DRAW]
+  - name: stg_scorers
+    columns:
+      - name: player_id
+        tests:
+          - not_null
+          - unique #THIS ONLY WORKS FOR A SINGLE SEASON - KNOWN LIMITATION - IMPLEMENT CUSTOM TEST/SURROGATE KEY BEFORE REMOVING
+      - name: season_id
+        tests:
+          - not_null
+      - name: team_id
+        tests:
+          - not_null
+      - name: played_matches
+        tests:
+          - not_null
+      - name: goals
+        tests:
+          - not_null
+      - name: assists
+        tests:
+          - not_null
+      - name: penalties
+        tests:
+          - not_null

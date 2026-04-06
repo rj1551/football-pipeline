@@ -77,5 +77,13 @@ ON CONFLICT DO UPDATE SET
 """, [scorers_ingestion_time]) #upsert
 
 # print(response.json())
-print(con.sql('SELECT COUNT(*) FROM scorers'))
-print(con.sql('SELECT DISTINCT ingested_at FROM scorers'))
+# print(con.sql('SELECT COUNT(*) FROM scorers'))
+# print(con.sql('SELECT DISTINCT ingested_at FROM scorers'))
+print(con.sql('SELECT * FROM stg_scorers WHERE assists IS NULL OR penalties IS NULL'))
+
+print(con.sql('''SELECT 
+    scorer_data->>'$.penalties' AS raw_val,
+    (scorer_data->>'$.penalties')::INTEGER AS casted_val,
+    COALESCE((scorer_data->>'$.penalties')::INTEGER, 0) AS coalesced
+FROM scorers
+WHERE (scorer_data::JSON->>'$.player.id')::INTEGER=11777'''))
