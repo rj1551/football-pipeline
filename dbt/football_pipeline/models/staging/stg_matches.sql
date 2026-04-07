@@ -17,4 +17,4 @@ SELECT
     match_data->>'$.score.winner' AS winner,
     match_data->>'$.score.duration' AS duration
 FROM
-    matches
+    {{ source('main', 'matches') }}

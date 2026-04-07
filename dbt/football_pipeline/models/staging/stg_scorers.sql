@@ -15,4 +15,4 @@ SELECT
     COALESCE((scorer_data->>'$.assists')::INTEGER, 0) AS assists,
     COALESCE((scorer_data->>'$.penalties')::INTEGER, 0) AS penalties
 FROM
-    scorers
+    {{ source('main', 'scorers') }}
