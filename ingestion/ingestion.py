@@ -10,8 +10,7 @@ load_dotenv()
 football_data_key = os.getenv('FOOTBALL_DATA_KEY')
 
 
-# Get the directory of the current file using pathlib
-script_dir = Path(__file__).parent.absolute()
+script_dir = Path(__file__).parent.absolute() # Get the directory of the current file using pathlib
 with duckdb.connect(script_dir.parent / 'data' / 'football_db.duckdb') as con:
     con.sql("""
     CREATE TABLE IF NOT EXISTS matches (
