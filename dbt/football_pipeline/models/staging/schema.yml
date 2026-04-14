@@ -14,6 +14,9 @@ models:
       - name: fulltime_home_goals
         tests:
           - not_null
+      - name: fulltime_away_goals
+        tests:
+          - not_null
       - name: utc_date
         tests:
           - not_null
@@ -30,10 +33,13 @@ models:
                 values: [HOME_TEAM, AWAY_TEAM, DRAW]
   - name: stg_scorers
     columns:
+      - name: player_season_id
+        tests:
+          - not_null
+          - unique
       - name: player_id
         tests:
           - not_null
-          - unique #THIS ONLY WORKS FOR A SINGLE SEASON - KNOWN LIMITATION - IMPLEMENT CUSTOM TEST/SURROGATE KEY BEFORE REMOVING
       - name: season_id
         tests:
           - not_null
@@ -52,3 +58,35 @@ models:
       - name: penalties
         tests:
           - not_null
+  - name: int_team_performance
+    columns:
+      - name: match_team_id
+        tests:
+          - not_null
+          - unique
+      - name: team_id
+        tests:
+          - not_null
+      - name: match_id
+        tests:
+          - not_null
+      - name: fulltime_goals_scored
+        tests:
+          - not_null
+      - name: fulltime_goals_conceded
+        tests:
+          - not_null
+      - name: utc_date
+        tests:
+          - not_null
+      - name: matchday
+        tests:
+          - not_null
+      - name: season_id
+        tests:
+          - not_null
+      - name: result
+        tests:
+          - accepted_values: 
+              arguments:
+                values: [WIN, LOSE, DRAW]

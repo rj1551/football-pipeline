@@ -46,26 +46,34 @@ WITH home_teams AS (
     FROM
         {{ ref('stg_matches') }}
 )
+, unioned AS (
+    SELECT
+        match_id,
+        utc_date,
+        matchday,
+        stage,
+        season_id,
+        team_id,
+        team_name,
+        team_tla,
+        fulltime_goals_scored,
+        halftime_goals_scored,
+        fulltime_goals_conceded,
+        halftime_goals_conceded,
+        result,
+        duration,
+        is_home
+    FROM
+        home_teams
+    UNION ALL
+    SELECT
+        * -- same columns as above from home_teams
+    FROM    
+        away_teams
+)
+
 SELECT
-    match_id,
-    utc_date,
-    matchday,
-    stage,
-    season_id,
-    team_id,
-    team_name,
-    team_tla,
-    fulltime_goals_scored,
-    halftime_goals_scored,
-    fulltime_goals_conceded,
-    halftime_goals_conceded,
-    result,
-    duration,
-    is_home
+    {{ dbt_utils.generate_surrogate_key(['match_id', 'team_id']) }} AS match_team_id,
+    *
 FROM
-    home_teams
-UNION ALL
-SELECT
-    * -- same columns as above from home_teams
-FROM    
-    away_teams
+    unioned

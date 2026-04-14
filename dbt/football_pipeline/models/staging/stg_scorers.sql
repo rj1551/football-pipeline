@@ -1,4 +1,5 @@
 SELECT
+    {{ dbt_utils.generate_surrogate_key(['id', 'season_id']) }} AS player_season_id,
     id AS player_id,
     season_id,
     scorer_data->>'$.player.firstName' AS player_first_name,
