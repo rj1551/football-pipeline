@@ -90,3 +90,15 @@ models:
           - accepted_values: 
               arguments:
                 values: [WIN, LOSE, DRAW]
+  - name: dim_teams
+    columns:
+      - name: team_id
+        tests:
+          - not_null
+          - unique
+  - name: dim_players
+    columns:
+      - name: player_id
+        tests:
+          - not_null
+          - unique
