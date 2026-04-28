@@ -102,3 +102,15 @@ models:
         tests:
           - not_null
           - unique
+  - name: fct_game_results
+    columns:
+      - name: match_id
+        tests:
+          - not_null
+          - unique
+  - name: fct_player_season
+    columns:
+      - name: player_season_id
+        tests:
+          - not_null
+          - unique
