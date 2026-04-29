@@ -1,5 +1,6 @@
 models:
   - name: stg_matches
+    description: One row per match with match stats
     columns:
       - name: match_id
         tests:
@@ -32,6 +33,7 @@ models:
               arguments:
                 values: [HOME_TEAM, AWAY_TEAM, DRAW]
   - name: stg_scorers
+    description: One row per player + season combination with player attributes + stats
     columns:
       - name: player_season_id
         tests:
@@ -59,6 +61,7 @@ models:
         tests:
           - not_null
   - name: int_team_performance
+    description: One row per match + team combination, showing match stats
     columns:
       - name: match_team_id
         tests:
@@ -91,24 +94,28 @@ models:
               arguments:
                 values: [WIN, LOSE, DRAW]
   - name: dim_teams
+    description: One row per team, showing team attributes
     columns:
       - name: team_id
         tests:
           - not_null
           - unique
   - name: dim_players
+    description: One row per scorer, showing scorer attributes
     columns:
       - name: player_id
         tests:
           - not_null
           - unique
   - name: fct_game_results
+    description: One row per match
     columns:
       - name: match_id
         tests:
           - not_null
           - unique
   - name: fct_player_season
+    description: One row per player + season combination
     columns:
       - name: player_season_id
         tests:
