@@ -13,8 +13,8 @@ flowchart LR
 
 Data design decisions:
 
-    I did insert only for matches because one match's data can't change once it's already finished and I only ingest them if they are finished; I did upserts for scorers because one scorer's data can be updated over time.
-    I chose to split player data up into two tables because I wanted to avoid a fully denormalized table with static attributes and changing attributes, so one table has attributes that can change across seasons and one has permanent attributes.
+I did insert only for matches because one match's data can't change once it's already finished and I only ingest them if they are finished; I did upserts for scorers because one scorer's data can be updated over time.
+I chose to split player data up into two tables because I wanted to avoid a fully denormalized table with static attributes and changing attributes, so one table has attributes that can change across seasons and one has permanent attributes.
 
 Marts:
     dim_teams - Lookup table, one row per team. Join to fact tables on team_id to enrich results with team names and attributes.
